@@ -51,8 +51,14 @@ func main() {
 
 	for {
 		for index, token := range tokens {
-			discord.SendMessage(messageContent, false, token, channelId)
-			fmt.Println(fmt.Sprintf("-> Message sent! (%s)", strconv.Itoa(index)))
+			response := discord.SendMessage(messageContent, false, token, channelId)
+
+			if response >= 200 && response <= 299 {
+				fmt.Println(fmt.Sprintf("-> Message sent! (%s)", strconv.Itoa(index)))
+			} else {
+				fmt.Println(fmt.Sprintf("-> Unknown error (%s) occurred! (%s)", strconv.Itoa(response), strconv.Itoa(index)))
+			}
+
 			time.Sleep(delayDuration)
 		}
 	}
