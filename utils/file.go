@@ -25,13 +25,13 @@ func FileExists(fileName string) bool {
 	return err == nil || !os.IsNotExist(err)
 }
 
-func ReadFile(fileName string) []string {
-	file, err := os.Open(fileName)
+func ReadFileToArray(fileName string) []string {
+	file, err := ReadRawFile(fileName)
 
 	if err != nil {
-		fmt.Println("Error opening file:", err)
 		return nil
 	}
+
 	defer file.Close()
 
 	var lines []string
@@ -49,4 +49,13 @@ func ReadFile(fileName string) []string {
 	}
 
 	return lines
+}
+
+func ReadRawFile(fileName string) (*os.File, error) {
+	file, err := os.Open(fileName)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return nil, err
+	}
+	return file, nil
 }

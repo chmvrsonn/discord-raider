@@ -1,12 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/chmvrsonn/discord-raider/discord"
 	"github.com/chmvrsonn/discord-raider/utils"
 	"github.com/common-nighthawk/go-figure"
-	"os"
 	"strconv"
 	"time"
 )
@@ -21,34 +19,18 @@ func main() {
 		return
 	}
 
-	scanner := bufio.NewScanner(os.Stdin)
+	config, _ := utils.LoadConfig()
 
-	fmt.Print("Enter message: ")
-	scanner.Scan()
-	messageContent := scanner.Text()
-
-	fmt.Print("Enter TTS (true/false): ")
-	scanner.Scan()
-	ttsStr := scanner.Text()
-	tts, _ := strconv.ParseBool(ttsStr)
-
-	fmt.Print("Enter channel ID: ")
-	scanner.Scan()
-	channelId := scanner.Text()
-
-	fmt.Print("Enter delay (in milliseconds): ")
-	scanner.Scan()
-	delayStr := scanner.Text()
-	delay, err := strconv.Atoi(delayStr)
+	err := utils.ValidateConfig(config)
 
 	if err != nil {
-		fmt.Println("Error converting delay to integer:", err)
+		fmt.Println(fmt.Sprintf("Config error: %s", err.Error()))
 		return
 	}
 
-	delayDuration := time.Duration(delay) * time.Millisecond
+	delayDuration := time.Duration(config.Delay) * time.Millisecond
 
-	tokens := utils.ReadFile("tokens.txt")
+	tokens := utils.ReadFileToArray("tokens.txt")
 
 	if tokens == nil {
 		return
@@ -56,7 +38,7 @@ func main() {
 
 	for {
 		for index, token := range tokens {
-			response := discord.SendMessage(messageContent, tts, token, channelId)
+			response := discord.SendMessage(config.Message, config.TTS, token, config.ChannelID)
 
 			if response >= 200 && response <= 299 {
 				fmt.Println(fmt.Sprintf("-> Message sent! (%s)", strconv.Itoa(index)))
