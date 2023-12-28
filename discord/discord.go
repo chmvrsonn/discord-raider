@@ -22,11 +22,9 @@ func SendMessage(content string, tts bool, authorization string, channelId strin
 		return 0
 	}
 
-	req.Header.Add("authority", "discord.com")
 	req.Header.Add("accept", "*/*")
 	req.Header.Add("accept-language", "en-US,en;q=0.5")
 	req.Header.Add("content-type", "application/json")
-	req.Header.Add("sec-ch-ua", `"Not_A Brand";v="8", "Chromium";v="120", "Brave";v="120"`)
 	req.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 	req.Header.Add("x-debug-options", "bugReporterEnabled")
 	req.Header.Add("x-discord-locale", "en-US")

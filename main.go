@@ -27,6 +27,11 @@ func main() {
 	scanner.Scan()
 	messageContent := scanner.Text()
 
+	fmt.Print("Enter TTS (true/false): ")
+	scanner.Scan()
+	ttsStr := scanner.Text()
+	tts, _ := strconv.ParseBool(ttsStr)
+
 	fmt.Print("Enter channel ID: ")
 	scanner.Scan()
 	channelId := scanner.Text()
@@ -51,7 +56,7 @@ func main() {
 
 	for {
 		for index, token := range tokens {
-			response := discord.SendMessage(messageContent, false, token, channelId)
+			response := discord.SendMessage(messageContent, tts, token, channelId)
 
 			if response >= 200 && response <= 299 {
 				fmt.Println(fmt.Sprintf("-> Message sent! (%s)", strconv.Itoa(index)))

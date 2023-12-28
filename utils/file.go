@@ -7,13 +7,13 @@ import (
 )
 
 func CreateFile(fileName string) {
-	if !FileExists(fileName) {
+	if FileExists(fileName) {
 		return
 	}
 
 	file, err := os.Create(fileName)
 	if err != nil {
-		fmt.Println(fileName+" -> Error creating file:", err)
+		fmt.Println("Error creating file:", err)
 		return
 	}
 
